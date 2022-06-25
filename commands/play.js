@@ -10,6 +10,8 @@ module.exports = {
 		const client = message.client
 		let guildQueue = client.player.getQueue(message.guild.id);
 		let queue = client.player.createQueue(message.guild.id)
+		
+		// Join & add the song to the queue
 		await queue.join(message.member.voice.channel);
         let song = await queue.play(args.join(' '))
 			.catch(err => {
@@ -22,7 +24,7 @@ module.exports = {
                 	queue.stop()
 	        });
 
-		const queueLength = queue.songs.length
+		// Send success message ==> displays song's info & position in queue
 		const embedSuccess = new MessageEmbed()
 			.setColor('#0099ff')
 			.setAuthor({name: message.member.displayName + ' | Ajouté en #' + queue.songs.length, iconURL: message.member.displayAvatarURL({dynamic: true})})
