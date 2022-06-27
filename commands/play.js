@@ -8,27 +8,42 @@ module.exports = {
 		.setDescription('Joue une musique à partir d\'une URL'),
 	async execute(message, args) {
 		const client = message.client
-		let guildQueue = client.player.getQueue(message.guild.id);
-		let queue = client.player.createQueue(message.guild.id)
+		const guildQueue = client.player.getQueue(message.guild.id);
+		const queue = client.player.createQueue(message.guild.id)
+		const songRequest = args.join(' ')
+		const isPlaylist = songRequest.includes('playlist')
+		const embedSuccess = new MessageEmbed().setColor('#0099ff')
 		
 		// Join & add the song to the queue
 		await queue.join(message.member.voice.channel);
-        let song = await queue.play(args.join(' '))
-			.catch(err => {
-				const embedError = new MessageEmbed()
-				.setColor('#ff0000')
-				.setDescription('Marche po')
-				message.channel.send({embeds : [embedError]})
+		if (!isPlaylist) {
+			let song = await queue.play(songRequest)
+				.catch(err => {
+					const embedError = new MessageEmbed()
+					.setColor('#ff0000')
+					.setDescription('Marche po')
+					message.channel.send({embeds : [embedError]})
+	
+					if(!guildQueue)
+						queue.stop()
+				});
+			embedSuccess
+				.setAuthor({name: message.member.displayName + ' | Ajouté en #' + queue.songs.length, iconURL: message.member.displayAvatarURL({dynamic: true})})
+				.setDescription('**' + song.name + '** par **' + song.author + '** [' + song.duration + ']')
+		} else {
+			let songs = await queue.playlist(songRequest)
+				.catch(err => {
+					const embedError = new MessageEmbed()
+					.setColor('#ff0000')
+					.setDescription('Marche po')
+					message.channel.send({embeds : [embedError]})
 
-				if(!guildQueue)
-                	queue.stop()
-	        });
-
-		// Send success message ==> displays song's info & position in queue
-		const embedSuccess = new MessageEmbed()
-			.setColor('#0099ff')
-			.setAuthor({name: message.member.displayName + ' | Ajouté en #' + queue.songs.length, iconURL: message.member.displayAvatarURL({dynamic: true})})
-			.setDescription('**' + song.name + '** par **' + song.author + '** [' + song.duration + ']')
+					if(!guildQueue)
+						queue.stop()
+				});
+			embedSuccess
+				.setAuthor({name: message.member.displayName + ' | ' + queue.songs.length + ' chansons ajoutées en file d\'attente', iconURL: message.member.displayAvatarURL({dynamic: true})})	
+		}
 	
 		message.channel.send({embeds : [embedSuccess]})
 		message.react('🎶')
