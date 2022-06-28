@@ -1,8 +1,9 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { s } = require('@sapphire/shapeshift');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders') 
+const { s } = require('@sapphire/shapeshift') 
+const { MessageEmbed } = require('discord.js') 
 
 module.exports = {
+	aliases: ['h'],
 	data: new SlashCommandBuilder()
 		.setName('help')
 		.setDescription('Donne la liste des commandes disponibles'),
@@ -21,4 +22,4 @@ module.exports = {
 
 		message.channel.send({embeds: [HelpEmbed]})
 	},
-};
+} 

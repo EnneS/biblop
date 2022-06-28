@@ -1,8 +1,9 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { s } = require('@sapphire/shapeshift');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders') 
+const { s } = require('@sapphire/shapeshift') 
+const { MessageEmbed } = require('discord.js') 
 
 module.exports = {
+	aliases: ['s'],
 	data: new SlashCommandBuilder()
 		.setName('skip')
 		.setDescription('Skip la musique en cours'),
@@ -13,4 +14,4 @@ module.exports = {
 		guildQueue.skip()
 		message.react('⏭')
 	},
-};
+} 

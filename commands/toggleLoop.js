@@ -1,9 +1,10 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { s } = require('@sapphire/shapeshift');
-const { RepeatMode } = require('discord-music-player');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders') 
+const { s } = require('@sapphire/shapeshift') 
+const { RepeatMode } = require('discord-music-player') 
+const { MessageEmbed } = require('discord.js') 
 
 module.exports = {
+	aliases: ['l'],
 	data: new SlashCommandBuilder()
 		.setName('loop')
 		.setDescription('Activer ou désactiver la répétition de la musique en cours'),
@@ -16,4 +17,4 @@ module.exports = {
 		message.react('🔁')
         if (!willRepeat) message.react('❌')
 	},
-};
+} 
