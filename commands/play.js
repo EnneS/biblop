@@ -12,7 +12,7 @@ module.exports = {
 		const guildQueue = client.player.getQueue(message.guild.id) 
 		const queue = client.player.createQueue(message.guild.id)
 		const songRequest = args.join(' ')
-		const isPlaylist = songRequest.includes('playlist')
+		const isPlaylist = songRequest.includes('playlist') || songRequest.includes('album')
 		const embedSuccess = new MessageEmbed().setColor('#0099ff')
 		
 		// Join & add the song to the queue
