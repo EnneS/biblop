@@ -41,7 +41,7 @@ client
 		if (message.content[0] != PREFIX) return
 
 		const args = message.content.slice(PREFIX.length).trim().split(/ +/g)
-		const command = client.commands.get(args.shift())
+		let command = client.commands.get(args.shift())
 		if (!command) command = client.commands.get(client.aliases.get(args.shift()))
 		if (!command) return
 
