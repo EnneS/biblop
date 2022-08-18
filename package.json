@@ -4,11 +4,14 @@
   },
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
-    "@discordjs/opus": "^0.7.0",
     "@discordjs/rest": "^0.5.0",
     "discord-api-types": "^0.35.0",
-    "discord-music-player": "^8.3.2",
-    "discord.js": "^13.8.1"
+    "discord-music-player": "9.0.2",
+    "discord.js": "^14.2.0",
+    "i": "^0.3.7",
+    "log": "^6.3.1",
+    "log-node": "^8.0.3",
+    "opusscript": "^0.0.8"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",

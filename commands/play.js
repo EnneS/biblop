@@ -1,6 +1,6 @@
-const { SlashCommandBuilder } = require('@discordjs/builders') 
+const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders') 
 const { s } = require('@sapphire/shapeshift') 
-const { MessageEmbed } = require('discord.js') 
+const log = require('log')
 
 module.exports = {
 	aliases: ['p'],
@@ -13,28 +13,33 @@ module.exports = {
 		const queue = client.player.createQueue(message.guild.id)
 		const songRequest = args.join(' ')
 		const isPlaylist = songRequest.includes('playlist') || songRequest.includes('album')
-		const embedSuccess = new MessageEmbed().setColor('#0099ff')
-		
+		const embedSuccess = new EmbedBuilder().setColor(0x0099FF)
+
 		// Join & add the song to the queue
-		await queue.join(message.member.voice.channel) 
+		await queue.join(message.member.voice.channel)
 		if (!isPlaylist) {
 			let song = await queue.play(songRequest)
 				.catch(err => {
-					const embedError = new MessageEmbed()
-					.setColor('#ff0000')
+					const embedError = new  EmbedBuilder()
+					.setColor(0xFF0000)
 					.setDescription('Marche po')
 					message.channel.send({embeds : [embedError]})
-	
+					
+					console.log("error !")
 					if(!guildQueue)
 						queue.stop()
 				}) 
-			embedSuccess
-				.setAuthor({name: message.member.displayName + ' | Ajouté en #' + queue.songs.length, iconURL: message.member.displayAvatarURL({dynamic: true})})
-				.setDescription('**' + song.name + '** par **' + song.author + '** [' + song.duration + ']')
+			if (song) {
+				embedSuccess
+					.setAuthor({name: message.member.displayName + ' | Ajouté en #' + queue.songs.length, iconURL: message.member.displayAvatarURL({dynamic: true})})
+					.setDescription('**' + song.name + '** par **' + song.author + '** [' + song.duration + ']')
+				
+				log.info(message.member.displayName + ' a ajouté ' + song.name + ' par ' + song.author + ' [' + song.duration + ']')
+			}
 		} else {
 			let songs = await queue.playlist(songRequest)
 				.catch(err => {
-					const embedError = new MessageEmbed()
+					const embedError = new  EmbedBuilder()
 					.setColor('#ff0000')
 					.setDescription('Marche po')
 					message.channel.send({embeds : [embedError]})
@@ -43,7 +48,9 @@ module.exports = {
 						queue.stop()
 				}) 
 			embedSuccess
-				.setAuthor({name: message.member.displayName + ' | ' + queue.songs.length + ' chansons ajoutées en file d\'attente', iconURL: message.member.displayAvatarURL({dynamic: true})})	
+				.setAuthor({name: message.member.displayName + ' | ' + queue.songs.length + ' chansons ajoutées en file d\'attente', iconURL: message.member.displayAvatarURL({dynamic: true})})
+			
+			log.info(message.member.displayName + ' a ajouté ' + queue.songs.length + ' chansons à la file d\'attente')
 		}
 	
 		message.channel.send({embeds : [embedSuccess]})

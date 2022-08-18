@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders') 
 const { s } = require('@sapphire/shapeshift') 
-const { MessageEmbed } = require('discord.js') 
+const {  EmbedBuilder } = require('discord.js') 
 
 module.exports = {
 	aliases: ['h'],
@@ -15,8 +15,8 @@ module.exports = {
 			desc += `**${name}**: ${command.data.description}\n`
 		}
 
-		const HelpEmbed = new MessageEmbed()
-			.setColor('#0099ff')
+		const HelpEmbed = new  EmbedBuilder()
+			.setColor(0x0099FF)
 			.setTitle('Liste des commandes')
 			.setDescription(desc)
 

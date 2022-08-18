@@ -1,9 +1,12 @@
+require("log-node")();
 const fs = require('node:fs')
 const path = require('node:path')
-const { Client, Intents, Collection, MessageEmbed } = require('discord.js')
+const { Client, IntentsBitField, Collection,  EmbedBuilder } = require('discord.js')
 const { token } = require('./config.json')
 const PREFIX = '!'
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] })
+const client = new Client({ intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.DirectMessages, IntentsBitField.Flags.GuildVoiceStates, IntentsBitField.Flags.MessageContent] })
+const log = require('log')
+
 
 // Registering commands
 client.commands = new Collection()
@@ -59,10 +62,19 @@ client
 client.player
 	.on('songFirst', (queue, song) => {
 		// Send the song info to the channel
-		const embedNewSong = new MessageEmbed()
-		.setColor('#0099ff')
+		const embedNewSong = new  EmbedBuilder()
+		.setColor(0x0099FF)
 		.setAuthor({name: '🎶 ' + song.name + ' - ' + song.author + ' | [' + song.duration + ']'})
+		.setDescription('')
 		client.lastChannel.send({embeds : [embedNewSong]})
+
+		log.info("Now playing: " + song.name + " - " + song.author)
 	})
+
+client.player
+	.on('error', (error) => {
+		log.error(error)
+	})
+
 
 client.login(token)

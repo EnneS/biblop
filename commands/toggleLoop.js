@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders') 
 const { s } = require('@sapphire/shapeshift') 
 const { RepeatMode } = require('discord-music-player') 
-const { MessageEmbed } = require('discord.js') 
+const {  EmbedBuilder } = require('discord.js') 
 
 module.exports = {
 	aliases: ['l'],
