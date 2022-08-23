@@ -64,8 +64,8 @@ client.player
 		// Send the song info to the channel
 		const embedNewSong = new  EmbedBuilder()
 		.setColor(0x0099FF)
-		.setAuthor({name: '🎶 ' + song.name + ' - ' + song.author + ' | [' + song.duration + ']'})
-		.setDescription('')
+		.setAuthor({name: song.name + ' - ' + song.author + ' | [' + song.duration + ']'})
+		.setDescription('🎶')
 		client.lastChannel.send({embeds : [embedNewSong]})
 
 		log.info("Now playing: " + song.name + " - " + song.author)
