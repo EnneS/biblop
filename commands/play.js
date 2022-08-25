@@ -25,7 +25,6 @@ module.exports = {
 					.setDescription('Marche po')
 					message.channel.send({embeds : [embedError]})
 					
-					console.log("error !")
 					if(!guildQueue)
 						queue.stop()
 				}) 

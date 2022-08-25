@@ -31,7 +31,7 @@ client.player = player
 
 
 client.once('ready', () => {
-	console.log('Ready!')
+	log.notice('Ready!')
 	
 	client.user.setActivity("blo-blo-blo-blo-blop", {
 		type: "STREAMING",
@@ -68,7 +68,20 @@ client.player
 		.setDescription('🎶')
 		client.lastChannel.send({embeds : [embedNewSong]})
 
-		log.info("Now playing: " + song.name + " - " + song.author)
+		log.info("🎶 Now playing: " + song.name + " - " + song.author)
+	})
+
+
+client.player
+	.on('songChanged', (queue, newSong, old) => {
+		// Send the song info to the channel
+		const embedNewSong = new  EmbedBuilder()
+		.setColor(0x0099FF)
+		.setAuthor({name: newSong.name + ' - ' + newSong.author + ' | [' + newSong.duration + ']'})
+		.setDescription('🎶')
+		client.lastChannel.send({embeds : [embedNewSong]})
+
+		log.info("🎶 Now playing: " + newSong.name + " - " + newSong.author)
 	})
 
 client.player

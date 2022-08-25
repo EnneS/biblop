@@ -6,7 +6,7 @@ module.exports = {
 	aliases: ['q'],
 	data: new SlashCommandBuilder()
 		.setName('queue')
-		.setDescription('Affiche la queue'),
+		.setDescription('Affiche la file d\'attente'),
 	async execute(message, args) {
 		const client = message.client
 		let guildQueue = client.player.getQueue(message.guild.id)
@@ -17,7 +17,7 @@ module.exports = {
 		}
 		const QueueEmbed = new  EmbedBuilder()
 			.setColor(0x0099FF)
-			.setTitle('Queue')
+			.setTitle('File d\'attente')
 			.setDescription(desc)
 		message.channel.send({embeds: [QueueEmbed]})
 	},

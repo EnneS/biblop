@@ -8,10 +8,10 @@
     "discord-api-types": "^0.35.0",
     "discord-music-player": "9.0.2",
     "discord.js": "^14.2.0",
-    "i": "^0.3.7",
     "log": "^6.3.1",
     "log-node": "^8.0.3",
-    "opusscript": "^0.0.8"
+    "opusscript": "^0.0.8",
+    "ytdl-core": "github:GreepTheSheep/node-ytdl-core"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
