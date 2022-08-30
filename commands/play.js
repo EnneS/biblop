@@ -48,7 +48,8 @@ module.exports = {
 				}) 
 			embedSuccess
 				.setAuthor({name: message.member.displayName + ' | ' + queue.songs.length + ' chansons ajoutées en file d\'attente', iconURL: message.member.displayAvatarURL({dynamic: true})})
-			
+				.setDescription('\u200B')
+				
 			log.info(message.member.displayName + ' a ajouté ' + queue.songs.length + ' chansons à la file d\'attente')
 		}
 	
