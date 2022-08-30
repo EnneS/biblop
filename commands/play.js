@@ -36,7 +36,7 @@ module.exports = {
 				log.info(message.member.displayName + ' a ajouté ' + song.name + ' par ' + song.author + ' [' + song.duration + ']')
 			}
 		} else {
-			let songs = await queue.playlist(songRequest)
+			let resp = await queue.playlist(songRequest)
 				.catch(err => {
 					const embedError = new  EmbedBuilder()
 					.setColor('#ff0000')
@@ -47,10 +47,10 @@ module.exports = {
 						queue.stop()
 				}) 
 			embedSuccess
-				.setAuthor({name: message.member.displayName + ' | ' + queue.songs.length + ' chansons ajoutées en file d\'attente', iconURL: message.member.displayAvatarURL({dynamic: true})})
+				.setAuthor({name: message.member.displayName + ' | ' + resp.songs.length + ' chansons ajoutées en file d\'attente', iconURL: message.member.displayAvatarURL({dynamic: true})})
 				.setDescription('lezgooooo')
 
-			log.info(message.member.displayName + ' a ajouté ' + queue.songs.length + ' chansons à la file d\'attente')
+			log.info(message.member.displayName + ' a ajouté ' + resp.songs.length + ' chansons à la file d\'attente')
 		}
 	
 		message.channel.send({embeds : [embedSuccess]})
