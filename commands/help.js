@@ -12,10 +12,14 @@ module.exports = {
 
 		let desc = ''
 		for (const [name, command] of client.commands) {
-			desc += `**${name}**: ${command.data.description}\n`
+			desc += `**!${name}**`
+			for (const alias of command.aliases) {
+				desc += ` | !${alias}`
+			}
+			desc += ` : ${command.data.description}\n`
 		}
 
-		const HelpEmbed = new  EmbedBuilder()
+		const HelpEmbed = new EmbedBuilder()
 			.setColor(0x0099FF)
 			.setTitle('Liste des commandes')
 			.setDescription(desc)

@@ -44,8 +44,9 @@ client
 		if (message.content[0] != PREFIX) return
 
 		const args = message.content.slice(PREFIX.length).trim().split(/ +/g)
-		let command = client.commands.get(args.shift())
-		if (!command) command = client.commands.get(client.aliases.get(args.shift()))
+		const commandArg = args.shift()
+		let command = client.commands.get(commandArg)
+		if (!command) command = client.commands.get(client.aliases.get(commandArg))
 		if (!command) return
 
 		// Save channel for events, the messages will be sent in the same channel

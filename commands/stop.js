@@ -3,15 +3,14 @@ const { s } = require('@sapphire/shapeshift')
 const {  EmbedBuilder } = require('discord.js') 
 
 module.exports = {
-	aliases: ['sk'],
+	aliases: ['st'],
 	data: new SlashCommandBuilder()
-		.setName('skip')
-		.setDescription('Skip la musique en cours'),
+		.setName('stop')
+		.setDescription('Déconnecte le bot'),
 	async execute(message, args) {
 		const client = message.client
 		let guildQueue = client.player.getQueue(message.guild.id)
-		if (!guildQueue) return message.reply('Y\'a pas de son fréro') && message.react('❌')
-		guildQueue.skip()
-		message.react('⏭')
+		guildQueue.stop()
+		message.react('👋')
 	},
 } 
