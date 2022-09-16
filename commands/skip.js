@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders') 
 const { s } = require('@sapphire/shapeshift') 
 const {  EmbedBuilder } = require('discord.js') 
+const { Message } = require('discord.js/src/structures/Message')
 
 module.exports = {
 	aliases: ['sk'],
@@ -12,6 +13,7 @@ module.exports = {
 		let guildQueue = client.player.getQueue(message.guild.id)
 		if (!guildQueue) return message.reply('Y\'a pas de son fréro') && message.react('❌')
 		guildQueue.skip()
-		message.react('⏭')
+		
+		if(message.author) message.react('⏭')
 	},
 } 

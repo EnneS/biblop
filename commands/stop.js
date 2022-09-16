@@ -11,6 +11,6 @@ module.exports = {
 		const client = message.client
 		let guildQueue = client.player.getQueue(message.guild.id)
 		guildQueue.stop()
-		message.react('👋')
+		if(message.author) message.react('👋')
 	},
 } 

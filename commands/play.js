@@ -35,7 +35,7 @@ module.exports = {
 			log.info(message.member.displayName + ' a ajouté ' + resp.songs.length + ' chansons à la file d\'attente')
 		}
 	
-		// message.channel.send({embeds : [embedSuccess]})
+		message.channel.send({embeds : [embedSuccess]})
 		message.react('🎶')
 	},
 } 

@@ -1,7 +1,9 @@
 require("log-node")();
 const fs = require('node:fs')
 const path = require('node:path')
-const { Client, IntentsBitField, Collection,  EmbedBuilder } = require('discord.js')
+const { Client, IntentsBitField, Collection,  EmbedBuilder, ButtonStyle } = require('discord.js')
+const { ActionRowBuilder, ButtonBuilder } = require("@discordjs/builders");
+const { sendPlayingMessage, deleteLastMessage } = require("./utils/utils");
 const { token } = require('./config.json')
 const PREFIX = '!'
 const client = new Client({ intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.DirectMessages, IntentsBitField.Flags.GuildVoiceStates, IntentsBitField.Flags.MessageContent] })
@@ -22,7 +24,8 @@ for (const file of commandFiles) {
 }
 
 // Registering music player
-const { Player } = require("discord-music-player")
+const { Player } = require("discord-music-player");
+
 const player = new Player(client, {
     leaveOnEmpty: true,
 	deafenOnJoin: true,
@@ -64,29 +67,51 @@ client
 		}
 	})
 
+client
+	.on("interactionCreate", async interaction => {
+		if (!interaction.isButton()) return;
+			let command = client.commands.get(interaction.customId)
+			if (!command) return
+			
+			try {
+				await command.execute(interaction, null)
+			} catch (error) {
+				const embedError = new  EmbedBuilder()
+				.setColor('#ff0000')
+				.setDescription('Marche po, contactez blop >:(')
+				interaction.channel.send({embeds : [embedError]})
+	
+				log.error(error)
+			}
+
+			interaction.deferReply();
+			interaction.deleteReply();
+	})
+
 client.player
 	.on('songFirst', (queue, song) => {
-		// Send the song info to the channel
-		const embedNewSong = new  EmbedBuilder()
-		.setColor(0x0099FF)
-		.setAuthor({name: song.name + ' - ' + song.author + ' | [' + song.duration + ']'})
-		.setDescription('🎶')
-		client.lastChannel.send({embeds : [embedNewSong]})
-
-		log.info("🎶 Now playing: " + song.name + " - " + song.author)
+		sendPlayingMessage(client, song)
 	})
 
 
 client.player
 	.on('songChanged', (queue, newSong, old) => {
-		// Send the song info to the channel
-		const embedNewSong = new  EmbedBuilder()
-		.setColor(0x0099FF)
-		.setAuthor({name: newSong.name + ' - ' + newSong.author + ' | [' + newSong.duration + ']'})
-		.setDescription('🎶')
-		client.lastChannel.send({embeds : [embedNewSong]})
+		sendPlayingMessage(client, newSong)
+	})
 
-		log.info("🎶 Now playing: " + newSong.name + " - " + newSong.author)
+client.player
+	.on('queueDestroyed', (queue) => {
+		deleteLastMessage(client)
+	})
+
+client.player
+	.on('queueEnd', (queue) => {
+		deleteLastMessage(client)
+	})
+
+client.player
+	.on('clientDisconnect', (queue) => {
+		deleteLastMessage(client)
 	})
 
 client.player
