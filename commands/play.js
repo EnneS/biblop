@@ -19,15 +19,6 @@ module.exports = {
 		await queue.join(message.member.voice.channel)
 		if (!isPlaylist) {
 			let song = await queue.play(songRequest)
-				.catch(err => {
-					const embedError = new  EmbedBuilder()
-					.setColor(0xFF0000)
-					.setDescription('Marche po')
-					message.channel.send({embeds : [embedError]})
-					
-					if(!guildQueue)
-						queue.stop()
-				}) 
 			if (song) {
 				embedSuccess
 					.setAuthor({name: message.member.displayName + ' | Ajouté en #' + queue.songs.length, iconURL: message.member.displayAvatarURL({dynamic: true})})
@@ -37,15 +28,6 @@ module.exports = {
 			}
 		} else {
 			let resp = await queue.playlist(songRequest)
-				.catch(err => {
-					const embedError = new  EmbedBuilder()
-					.setColor('#ff0000')
-					.setDescription('Marche po')
-					message.channel.send({embeds : [embedError]})
-
-					if(!guildQueue)
-						queue.stop()
-				}) 
 			embedSuccess
 				.setAuthor({name: message.member.displayName + ' | ' + resp.songs.length + ' chansons ajoutées en file d\'attente', iconURL: message.member.displayAvatarURL({dynamic: true})})
 				.setDescription('lezgooooo')
@@ -53,7 +35,7 @@ module.exports = {
 			log.info(message.member.displayName + ' a ajouté ' + resp.songs.length + ' chansons à la file d\'attente')
 		}
 	
-		message.channel.send({embeds : [embedSuccess]})
+		// message.channel.send({embeds : [embedSuccess]})
 		message.react('🎶')
 	},
 } 

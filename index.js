@@ -33,8 +33,8 @@ client.player = player
 client.once('ready', () => {
 	log.notice('Ready!')
 	
-	client.user.setActivity("blo-blo-blo-blo-blop", {
-		type: "STREAMING",
+	client.user.setActivity("blo-blo-blo-blo-blop | !h", {
+		type: "PLAYING",
 	})
 })
 
@@ -55,8 +55,12 @@ client
 		try {
 			await command.execute(message, args)
 		} catch (error) {
-			console.error(error)
-			await message.reply({ content: error.message, ephemeral: true })
+			const embedError = new  EmbedBuilder()
+			.setColor('#ff0000')
+			.setDescription('Marche po, contactez blop >:(')
+			message.channel.send({embeds : [embedError]})
+
+			log.error(error)
 		}
 	})
 
