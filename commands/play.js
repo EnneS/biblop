@@ -8,6 +8,8 @@ module.exports = {
 		.setName('play')
 		.setDescription('Joue une musique à partir d\'une URL'),
 	async execute(message, args) {
+		message.react('⏳')
+
 		const client = message.client
 		const guildQueue = client.player.getQueue(message.guild.id) 
 		const queue = client.player.createQueue(message.guild.id)
@@ -36,6 +38,7 @@ module.exports = {
 		}
 	
 		message.channel.send({embeds : [embedSuccess]})
+		await message.reactions.removeAll()
 		message.react('🎶')
 	},
 } 
