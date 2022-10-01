@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node ."
+    "start": "mkdir -p logs && node . 2>&1 | tee logs/log-$(date \"+%Y-%m-%d\").txt"
   },
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
