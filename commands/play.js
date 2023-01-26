@@ -1,7 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders') 
 const { s } = require('@sapphire/shapeshift') 
 const log = require('log')
-import { cleanSongRequest } from '../utils/utils'
+const { cleanSongRequest } = require("../utils/utils");
+
 
 module.exports = {
 	aliases: ['p'],
