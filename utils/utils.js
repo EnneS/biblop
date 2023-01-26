@@ -31,9 +31,13 @@ module.exports = {
 		log.info("🎶 Now playing: " + song.name + " - " + song.author)
     },
     deleteLastMessage(client) {
-        if (client.lastMessage) {
-			client.lastMessage.delete()
-			client.lastMessage = null
+		try {
+			if (client.lastMessage) {
+				client.lastMessage.delete()
+				client.lastMessage = null
+			}
+		} catch (error) {
+			log.error(error)
 		}
     },
 	cleanSongRequest (songRequest) {
