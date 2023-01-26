@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders') 
 const { s } = require('@sapphire/shapeshift') 
 const log = require('log')
+import { cleanSongRequest } from '../utils/utils'
 
 module.exports = {
 	aliases: ['p'],
@@ -11,7 +12,6 @@ module.exports = {
 		message.react('⏳')
 
 		const client = message.client
-		const guildQueue = client.player.getQueue(message.guild.id) 
 		const queue = client.player.createQueue(message.guild.id)
 		const songRequest = args.join(' ')
 		const isPlaylist = songRequest.includes('playlist') || songRequest.includes('album')
@@ -20,7 +20,9 @@ module.exports = {
 		// Join & add the song to the queue
 		await queue.join(message.member.voice.channel)
 		if (!isPlaylist) {
-			let song = await queue.play(songRequest)
+			// Clean the songRequest first
+			let songRequestCleaned = cleanSongRequest(songRequest)
+			let song = await queue.play(songRequestCleaned)
 			if (song) {
 				embedSuccess
 					.setAuthor({name: message.member.displayName + ' | Ajouté en #' + queue.songs.length, iconURL: message.member.displayAvatarURL({dynamic: true})})

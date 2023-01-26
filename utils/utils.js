@@ -36,5 +36,11 @@ module.exports = {
 			client.lastMessage.delete()
 			client.lastMessage = null
 		}
-    }
+    },
+	cleanSongRequest (songRequest) {
+		// path looks like https://www.youtube.com/watch?v=vHJfMFJRGpY&list=RDMMvHJfMFJRGpY&start_radio=1&ab_channel=Blaze-Topic&blabla=blabla
+		// only keep https://www.youtube.com/watch?v=vHJfMFJRGpY
+		let path = songRequest.split('&')[0]
+		return path
+	}
 }

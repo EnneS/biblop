@@ -25,6 +25,7 @@ for (const file of commandFiles) {
 
 // Registering music player
 const { Player } = require("discord-music-player");
+const { DMPError } = require("discord-music-player");
 
 const player = new Player(client, {
     leaveOnEmpty: true,
@@ -59,10 +60,13 @@ client
 			await command.execute(message, args)
 		} catch (error) {
 			const embedError = new  EmbedBuilder()
-			.setColor('#ff0000')
-			.setDescription('Marche po, contactez blop >:(')
+				.setColor('#ff0000')
+			if (error instanceof Error) {
+				embedError.setDescription(error.message)
+			} else {
+				embedError.setDescription('Marche po, contactez blop >:(')
+			}
 			message.channel.send({embeds : [embedError]})
-
 			log.error(error)
 		}
 	})
