@@ -12,13 +12,14 @@
     "log": "^6.3.1",
     "log-node": "^8.0.3",
     "opusscript": "^0.0.8",
-    "ytdl-core": "^4.11.2"
+    "ytdl-core": "4.9.1"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
     "eslint": "^8.18.0"
   },
   "overrides": {
-    "ytsr": "github:Yonle/node-ytsr"
+    "ytsr": "3.8.1",
+    "discord.js": "^14.8.0"
   }
 }
