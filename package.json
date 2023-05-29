@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "mkdir -p logs && node . 2>&1 | tee logs/log-$(date \"+%Y-%m-%d\").txt"
+    "start": "LOG_LEVEL=info && mkdir -p logs && node . 2>&1 | tee logs/log-$(date \"+%Y-%m-%d\").txt"
   },
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
@@ -12,14 +12,14 @@
     "log": "^6.3.1",
     "log-node": "^8.0.3",
     "opusscript": "^0.0.8",
-    "ytdl-core": "4.9.1"
+    "ytdl-core": "^4.11.4"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
     "eslint": "^8.18.0"
   },
   "overrides": {
-    "ytsr": "3.8.1",
+    "ytsr": "3.8.2",
     "discord.js": "^14.8.0"
   }
 }
