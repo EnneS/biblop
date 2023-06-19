@@ -23,7 +23,7 @@ module.exports = {
 				const queue = useQueue(message.guild.id)
 				const track = res.track
 				const embedSuccess = new EmbedBuilder().setColor(0x0099FF)
-					.setAuthor({name: message.member.displayName + ' | Ajouté en #' + queue.tracks.toArray().length, iconURL: message.member.displayAvatarURL({dynamic: true})})
+					.setAuthor({name: message.member.displayName + ' | Ajouté en #' + queue.tracks.toArray().length + 1, iconURL: message.member.displayAvatarURL({dynamic: true})})
 					.setDescription('**' + track.title + '** par **' + track.author + '** [' + track.duration + ']')
 				
 				message.channel.send({embeds : [embedSuccess]})
