@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders') 
 const { s } = require('@sapphire/shapeshift') 
-const {  EmbedBuilder } = require('discord.js') 
+const { useQueue } = require("discord-player");
 
 module.exports = {
 	aliases: ['st'],
@@ -8,9 +8,8 @@ module.exports = {
 		.setName('stop')
 		.setDescription('Déconnecte le bot'),
 	async execute(message, args) {
-		const client = message.client
-		let guildQueue = client.player.getQueue(message.guild.id)
-		guildQueue.stop()
+		let guildQueue = useQueue(message.guild.id)
+		guildQueue.delete();
 		if(message.author) message.react('👋')
 	},
 } 

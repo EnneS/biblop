@@ -9,7 +9,6 @@ const PREFIX = '!'
 const client = new Client({ intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.DirectMessages, IntentsBitField.Flags.GuildVoiceStates, IntentsBitField.Flags.MessageContent] })
 const log = require('log')
 
-
 // Registering commands
 client.commands = new Collection()
 client.aliases = new Collection()
@@ -24,13 +23,10 @@ for (const file of commandFiles) {
 }
 
 // Registering music player
-const { Player } = require("discord-music-player");
-const { DMPError } = require("discord-music-player");
+const { Player } = require('discord-player');
 
-const player = new Player(client, {
-    leaveOnEmpty: true,
-	deafenOnJoin: true,
-})
+const player = new Player(client)
+player.extractors.loadDefault();
 client.player = player
 
 
@@ -74,52 +70,41 @@ client
 client
 	.on("interactionCreate", async interaction => {
 		if (!interaction.isButton()) return;
-			let command = client.commands.get(interaction.customId)
-			if (!command) return
-			
-			try {
-				await command.execute(interaction, null)
-			} catch (error) {
-				const embedError = new  EmbedBuilder()
-				.setColor('#ff0000')
-				.setDescription('Marche po, contactez blop >:(')
-				interaction.channel.send({embeds : [embedError]})
-	
-				log.error(error)
-			}
+		let command = client.commands.get(interaction.customId)
+		if (!command) return
+		
+		try {
+			await command.execute(interaction, null)
+		} catch (error) {
+			const embedError = new  EmbedBuilder()
+			.setColor('#ff0000')
+			.setDescription('Marche po, contactez blop >:(')
+			interaction.channel.send({embeds : [embedError]})
 
-			interaction.deferReply();
-			interaction.deleteReply();
+			log.error(error)
+		}
+
+		interaction.deferReply();
+		interaction.deleteReply();
 	})
 
-client.player
-	.on('songFirst', (queue, song) => {
+client.player.events
+	.on('playerStart', (queue, song) => {
 		sendPlayingMessage(client, song)
 	})
 
-
-client.player
-	.on('songChanged', (queue, newSong, old) => {
-		sendPlayingMessage(client, newSong)
-	})
-
-client.player
-	.on('queueDestroyed', (queue) => {
-		deleteLastMessage(client)
-	})
-
-client.player
+client.player.events
 	.on('queueEnd', (queue) => {
 		deleteLastMessage(client)
 	})
 
-client.player
-	.on('clientDisconnect', (queue) => {
+client.player.events
+	.on('disconnect', (queue) => {
 		deleteLastMessage(client)
 	})
 
-client.player
-	.on('error', (error) => {
+client.player.events
+	.on('playerError', (error) => {
 		log.error(error)
 	})
 

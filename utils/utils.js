@@ -7,7 +7,7 @@ module.exports = {
         // Send the song info to the channel
 		const embedNewSong = new  EmbedBuilder()
 		.setColor(0x0099FF)
-		.setAuthor({name: song.name + ' - ' + song.author + ' | [' + song.duration + ']'})
+		.setAuthor({name: song.title + ' - ' + song.author + ' | [' + song.duration + ']'})
 		.setDescription('🎶')
 
 		// Action buttons
@@ -28,7 +28,7 @@ module.exports = {
 		client.lastChannel.send({embeds : [embedNewSong], components : [row]})
 				.then((m) => client.lastMessage = m)
 
-		log.info("🎶 Now playing: " + song.name + " - " + song.author)
+		log.info("🎶 Now playing: " + song.title + " - " + song.author)
     },
     deleteLastMessage(client) {
 		try {

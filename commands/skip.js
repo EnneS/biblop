@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders') 
-const { s } = require('@sapphire/shapeshift') 
-const {  EmbedBuilder } = require('discord.js') 
-const { Message } = require('discord.js/src/structures/Message')
+const { useQueue } = require("discord-player");
 
 module.exports = {
 	aliases: ['sk'],
@@ -9,10 +7,9 @@ module.exports = {
 		.setName('skip')
 		.setDescription('Skip la musique en cours'),
 	async execute(message, args) {
-		const client = message.client
-		let guildQueue = client.player.getQueue(message.guild.id)
+		let guildQueue = useQueue(message.guild.id);
 		if (!guildQueue) return message.reply('Y\'a pas de son fréro') && message.react('❌')
-		guildQueue.skip()
+		guildQueue.node.skip()
 		
 		if(message.author) message.react('⏭')
 	},
