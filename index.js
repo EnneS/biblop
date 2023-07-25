@@ -94,7 +94,7 @@ client.player.events
 	})
 
 client.player.events
-	.on('queueEnd', (queue) => {
+	.on('emptyQueue', (queue) => {
 		deleteLastMessage(client)
 	})
 
