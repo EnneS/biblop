@@ -1,8 +1,7 @@
 require("log-node")();
 const fs = require('node:fs')
 const path = require('node:path')
-const { Client, IntentsBitField, Collection, EmbedBuilder, ButtonStyle } = require('discord.js')
-const { ActionRowBuilder, ButtonBuilder } = require("@discordjs/builders");
+const { Client, IntentsBitField, Collection, EmbedBuilder, ActivityType } = require('discord.js')
 const { sendPlayingMessage, deleteLastMessage } = require("./utils/utils");
 const { token } = require('./config.json')
 const PREFIX = '!'
@@ -34,8 +33,7 @@ client.once('ready', () => {
 	log.notice('Ready!')
 
 	client.user.setPresence({
-		activities: [{ name: `discord.js v14`, type: ActivityType.Watching }],
-		status: 'blo-blo-blo-blo-blop | !h',
+		activities: [{ name: `!h | blo-blo-blo-blop`, type: ActivityType.Listening }]
 	});
 })
 
