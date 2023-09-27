@@ -5,7 +5,7 @@ const { Client, IntentsBitField, Collection,  EmbedBuilder, ButtonStyle } = requ
 const { ActionRowBuilder, ButtonBuilder } = require("@discordjs/builders");
 const { sendPlayingMessage, deleteLastMessage } = require("./utils/utils");
 const { token } = require('./config.json')
-const PREFIX = '!'
+const PREFIX = '&'
 const client = new Client({ intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.DirectMessages, IntentsBitField.Flags.GuildVoiceStates, IntentsBitField.Flags.MessageContent] })
 const log = require('log')
 
@@ -23,7 +23,7 @@ for (const file of commandFiles) {
 }
 
 // Registering music player
-const { Player } = require('discord-player');
+const { Player, Util } = require('discord-player');
 
 const player = new Player(client)
 player.extractors.loadDefault();
@@ -108,5 +108,23 @@ client.player.events
 		log.error(error)
 	})
 
+client.player.events
+	.on('willAutoPlay', async (queue, tracks, done) => {
+	// Autoplay Next Track Selection Algorithm
+	// Select a random track among tracks which title is not in the history
+	const history = queue.history.tracks.map(t => t.title)
+	let selectedTrack = Util.randomChoice(tracks.slice(0, 10)); 
+	console.log(history, tracks.map(t => t.title))
+	let i = 0
+	while (history.includes(selectedTrack.title)) {
+		selectedTrack = Util.randomChoice(tracks.slice(0, ++i+10)); 
+		if (i+10 > tracks.length) {
+			break // Avoid infinite loop
+		}
+	}
+	
+	return done(selectedTrack || null);
+})
 
 client.login(token)
+

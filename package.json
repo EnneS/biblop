@@ -9,7 +9,7 @@
     "@discordjs/rest": "^0.5.0",
     "@discordjs/voice": "^0.16.0",
     "discord-api-types": "^0.35.0",
-    "discord-player": "^6.5.0",
+    "discord-player": "^6.6.4",
     "discord.js": "^14.8.0",
     "log": "^6.3.1",
     "log-node": "^8.0.3",

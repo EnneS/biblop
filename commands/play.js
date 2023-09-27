@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders') 
-const { useMasterPlayer } = require("discord-player");
+const { useMainPlayer } = require("discord-player");
 const { s } = require('@sapphire/shapeshift') 
 const log = require('log')
 const { cleanSongRequest } = require("../utils/utils");
@@ -13,23 +13,40 @@ module.exports = {
 	async execute(message, args) {
 		message.react('⏳')
 
-		const player = useMasterPlayer()
+		const player = useMainPlayer()
 		const songRequest = args.join(' ')
-		const query = cleanSongRequest(songRequest)
 
 		// Play song
-		await player.play(message.member.voice.channel, query)
-			.then(async res => {
-				const queue = useQueue(message.guild.id)
-				const track = res.track
-				const embedSuccess = new EmbedBuilder().setColor(0x0099FF)
-					.setAuthor({name: message.member.displayName + ' | Ajouté en #' + (queue.tracks.toArray().length + 1), iconURL: message.member.displayAvatarURL({dynamic: true})})
-					.setDescription('**' + track.title + '** par **' + track.author + '** [' + track.duration + ']')
-				
-				message.channel.send({embeds : [embedSuccess]})
-				await message.reactions.removeAll()
-				message.react('🎶')
-				log.info(message.member.displayName + ' a ajouté ' + track.title + ' par ' + track.author + ' [' + track.duration + ']')
-			})
+		try {
+			await player.play(message.member.voice.channel, cleanSongRequest(songRequest))
+				.then(async res => {
+					const queue = useQueue(message.guild.id)
+					const track = res.track
+					let desc = ""
+					let authorDesc = ""
+					if (track.playlist) {
+						for (const [i, song] of track.playlist.tracks.entries()) {
+							desc += `${i + 1}. **${song.title}** par **${song.author}** [${song.duration}]\n`
+						}
+						authorDesc = "Ajoutés en #" + ((queue.tracks.toArray().length +1 ) - (track.playlist.tracks.length) + 1) 
+					} else {
+						authorDesc = "Ajouté en #" + (queue.tracks.toArray().length + 1)
+						desc = `**${track.title}** par **${track.author}** [${track.duration}]`
+					}
+					const embedSuccess = new EmbedBuilder().setColor(0x0099FF)
+						.setAuthor({name: message.member.displayName + ' | ' + authorDesc, iconURL: message.member.displayAvatarURL({dynamic: true})})
+						.setDescription(desc)
+					
+					message.channel.send({embeds : [embedSuccess]})
+					await message.reactions.removeAll()
+					message.react('🎶')
+					log.info(message.member.displayName + ' a ajouté ' + track.title + ' par ' + track.author + ' [' + track.duration + ']')
+				})
+		} catch (error) {
+			const embedError = new EmbedBuilder().setColor(0xFF0000)
+				.setDescription('🙅‍♂️ Impossible de jouer la musique (peut-être que le lien est invalide ?)')
+			message.channel.send({embeds : [embedError]})
+			log.error(error)
+		}
 	},
 } 
