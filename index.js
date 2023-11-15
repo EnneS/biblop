@@ -125,5 +125,10 @@ client.player.events
 		return done(selectedTrack || null);
 	})
 
+client.player.events
+	.on('error', (error, message) => {
+		log.error(error)
+	})
+
 client.login(token)
 

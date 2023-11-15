@@ -9,11 +9,11 @@
     "@discordjs/rest": "^0.5.0",
     "@discordjs/voice": "^0.16.0",
     "discord-api-types": "^0.35.0",
-    "discord-player": "^6.6.4",
+    "discord-player": "^6.6.6",
     "discord.js": "^14.8.0",
     "log": "^6.3.1",
     "log-node": "^8.0.3",
-    "ytdl-core": "^4.11.4"
+    "youtube-ext": "^1.1.16"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
