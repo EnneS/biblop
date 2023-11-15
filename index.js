@@ -24,7 +24,19 @@ for (const file of commandFiles) {
 // Registering music player
 const { Player, Util } = require('discord-player');
 
-const player = new Player(client)
+const player = new Player(client, {
+	useLegacyFFmpeg: false,
+	skipFFmpeg: false,
+	ipconfig: {
+		blocks: [],
+		exclude: [],
+		maxRetries: 3
+	},
+	ytdlOptions: {
+		quality: 'highestaudio',
+		highWaterMark: 1 << 25,
+	}
+});
 player.extractors.loadDefault();
 client.player = player
 
@@ -103,11 +115,6 @@ client.player.events
 	})
 
 client.player.events
-	.on('playerError', (error) => {
-		log.error(error)
-	})
-
-client.player.events
 	.on('willAutoPlay', async (queue, tracks, done) => {
 		// Autoplay Next Track Selection Algorithm
 		// Select a random track among tracks which title is not in the history
@@ -129,6 +136,11 @@ client.player.events
 	.on('error', (error, message) => {
 		log.error(error)
 	})
+
+client.player.events
+.on('playerError', (error) => {
+	log.error(error)
+})
 
 client.login(token)
 
